@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+html,
+body, #map {
+  font-family: Arial, sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0px;
+}
+
+header {
+    height:80px;
+    transition: 0.5s;
+}
+
+input { font-size: 12px; }
+
+h1 {
+  padding: 8px 8px 8px 32px;
+  margin: auto;
+  text-decoration: none;
+  font-size: 25px;
+  color: yellow;
+  display: block;
+  transition: 0.5s;
+  vertical-align: middle;
+  height:100%;
+  line-height: 55px;
+}
+
+#map {
+  /* Set rules to fill background */
+  width: 100%;
+  height: 91.5%;
+   /* Set up positioning */
+  position: absolute;
+  top: 80px;
+  left: 0;
+  bottom: 80px;
+  transition: 0.5s;
+ }
+
+#nav { transition:0.5s; }
+
+hr {
+  background: #D0D7D9;
+  height: 1px;
+  margin: 20px 0 20px 0;
+  border: none;
+}
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0; /* Stay at the top */
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181 !important;
+    display: block;
+    transition: 0.5s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover { color: #f1f1f1 !important; }
+
+.sidenav li {
+  list-style:none;
+  padding: none;
+  transition: 0.5s;
+}
+
+.sidenav ul { padding-left: 8px; }
+
+.filter-list-link {
+  width:100%;
+  min-width: 500px;
+}
+
+.heading {
+  width:100%;
+  min-width: 500px;
+  height: 80px;
+  background-color: grey;
+  top:0px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight:400;
+}
+.location-list {
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.filter-button, .add-button { float: right; }
+.filter-input { overflow: hidden; }
+#search-filter { width: 100%; }
+#create-marker { width: 100%; }
+
+.add-marker {
+  bottom: 0px;
+  width: 100%;
+}
+.glyphicon-star-empty, .glyphicon-star {
+    font-size: 50px;
+}
+
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+}
+
+/* Style for the Burger Menu, including animation */
+.container {
+    display: inline-block;
+    cursor: pointer;
+    width: auto;
+}
+
+.bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+}
+
+.change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-9px, 6px);
+}
+
+.change .bar2 { opacity: 0; }
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-8px, -8px);
+}
+.item {
+    background-color: black;
+    height: 150px;
+}
+
+.carousel {
+  width:150px;
+  height:360px;
+}
+.carousel-caption {
+  bottom: 0;
+}
+.info-window {
+  height: auto;
+  max-height: 500px;
+  width: 180px;
+}
+.flickr-link {
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+}
