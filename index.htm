@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood Map</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/lib/fontawesome.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -37,8 +38,8 @@
 
       <ul class="location-list" data-bind="foreach: filterPins">
         <li>
+          <i class="" data-bind="click: $parent.toggleFavourite, attr: {id: $data.id}, css: $parent.checkFavourite($data)"></i>
           <a class="filter-list-link" data-bind="text: $data.title, click: $parent.locationClicked.bind($data.id)"></a>
-          <span class="glyphicon glyphicon-star-empty" data-bind="click: $parent.toggleFavourite, attr: {id: $data.id}"></span>
         </li>
       </ul>
 
@@ -47,19 +48,6 @@
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase-database.js"></script>
-    <script>
-      // Initialize Firebase
-      var config = {
-        apiKey: "AIzaSyC_aKs-5e3hXL1jupJpfjFocogAMsXI0mI",
-        authDomain: "neighborhood-app-29991.firebaseapp.com",
-        databaseURL: "https://neighborhood-app-29991.firebaseio.com",
-        projectId: "neighborhood-app-29991",
-        storageBucket: "",
-        messagingSenderId: "1082791730015"
-      };
-      firebase.initializeApp(config);
-      var database = firebase.database();
-    </script>
     <script src="js/flickr.js"></script>
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/mapStyle.js"></script>

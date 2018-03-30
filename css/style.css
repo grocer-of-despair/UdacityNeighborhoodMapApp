@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
 
 html,
 body, #map {
@@ -85,6 +86,7 @@ hr {
 
 .filter-list-link {
   width:100%;
+  margin-left: 30px;
   min-width: 500px;
 }
 
@@ -112,8 +114,18 @@ hr {
   bottom: 0px;
   width: 100%;
 }
-.glyphicon-star-empty, .glyphicon-star {
-    font-size: 50px;
+.fa-star {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 30px;
+  margin-top: 5px;
+}
+
+ 
+.fas {
+  color: gold;
 }
 
 

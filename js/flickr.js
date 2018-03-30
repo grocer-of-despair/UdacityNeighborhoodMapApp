@@ -6,7 +6,7 @@ function getFlickrPhotos(pin){
   var url = 'https://api.flickr.com/services/rest/'
             +'?method=flickr.photos.search&format=json&api_key='
             +FLICKR_KEY+'&text='+pin.title+'&per_page=20&jsoncallback=?'
-
+  pin.flickrPhotos = [];
   $.getJSON(url,
     function(data)
         {
@@ -26,6 +26,7 @@ function getFlickrPhotos(pin){
                   photoTitle: item.title,
                   imgLink: '<a class="flickr-link" href="'+photoURL+'" target="_blank">View on Flickr</a>',
                 }
+
                 pin.flickrPhotos.push(newPhoto);
           })
         }

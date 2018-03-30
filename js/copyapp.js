@@ -38,18 +38,18 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database();
 
+for (var i=0; i < locationsArray.length; i++){
+  writeLocationData(locationsArray[i][0],locationsArray[i][1],locationsArray[i][2],locationsArray[i][3])
+}
+
 function writeLocationData(id, title, lat, lng, marker) {
   firebase.database().ref('locations/' + id).set({
     id : id,
     title : title,
     lat : lat,
-    lng : lng,
-    marker : {},
-    isFavourite : false,
-    flickrPhotos : []
+    lng : lng
   });
 }
-
 
 /*
 *   ViewModel that contains all the observables and functionsthat interact with the map
@@ -60,35 +60,20 @@ var viewModel = function(map){
   self.query = ko.observable('');
   self.newMarker = ko.observable('');
   self.locationsArray = ko.observable([]);
-
-  firebase.database().ref('/locations/').once('value').then(function(snapshot) {
-    var hello = snapshot.val();
-    for (var i in hello) {
-      self.locationsArray().push(hello[i]);
-    }
-    console.log(self.locationsArray())
-    loadMarkers();
-    self.query(' ');
-    self.query('');
-  });
-
-
   // Style the markers a bit. This will be our listing marker icon.
   var defaultIcon = makeMarkerIcon('0091ff');
 
   // Create a "highlighted location" marker color for when the user
   // mouses over the marker.
-  var highlightedIcon = makeMarkerIcon('458B00');
+  var highlightedIcon = makeMarkerIcon('FFFF24');
 
-  // Create a "Favourite Location Icon" for when a user favourites a locaiton
-  var favouriteIcon = makeMarkerIcon('FFFF24')
-
-  //Create the InfoWindow that will display information about a location when
-  //Marker is clicked
+  //Create the InfoWindow that will display information about a location when Marker is clicked
   infowindow = new google.maps.InfoWindow({
 			 content: '',
 			 maxWidth: '200'
 		 });
+   // Load the markers for the default points of interest
+  loadMarkers();
 
   /*
   *   This function creates a Knockout Computed function that that takes the
@@ -110,19 +95,18 @@ var viewModel = function(map){
 
 
   }, this);
-
   //Create a new Marker from each element in the Locations Array, adding the
   //relevant Listeners
   function loadMarkers(){
     self.locationsArray().forEach(function(pin){
 
       var latlng = new google.maps.LatLng(pin.lat,pin.lng);
-      var icon = pin.isFavourite == true ? favouriteIcon : defaultIcon;
+      console.log("hello")
       pin.marker = new google.maps.Marker({
         position: latlng,
         map: map,
         animation: google.maps.Animation.DROP,
-        icon: icon,
+        icon: defaultIcon,
         title : pin.title,
       });
       getFlickrPhotos(pin)
@@ -144,8 +128,8 @@ var viewModel = function(map){
         this.setIcon(defaultIcon);
       });
 
-    });
-  } // end of loadMarkers
+  });
+  }
 
 
 
@@ -163,49 +147,34 @@ var viewModel = function(map){
         document.getElementById("mySidenav").style.width = "30%";
         document.getElementById("nav").style.marginLeft = "30%";
       }
-  } //end of openNav
-
+  }
 
   // animates the marker and shows its infowindow upon click in the list
 	self.locationClicked = function(location) {
 		populateInfoWindow(location);
 	};
-
-
-  //Change class of star depending on whether the location is a favourite
-  self.checkFavourite = function(location) {
-        return location.isFavourite == false ? "fa far fa-star" : "fa fas fa-star";
-  };
-
   self.toggleFavourite = function(location) {
-
     console.log(location.isFavourite)
     if (location.isFavourite == false) {
       location.isFavourite = true;
-      location.marker.setIcon(favouriteIcon);
       var id = '#'+location.id;
-      $(id).removeClass("far" ).addClass( "fas" );
-
-      firebase.database().ref('locations/' + location.id).update({
-        isFavourite:true
-      });
+      $(id).removeClass("glyphicon-star-empty" ).addClass( "glyphicon-star" );
     } else {
       location.isFavourite = false;
-      location.marker.setIcon(defaultIcon);
       var id = '#'+location.id;
-      $(id).removeClass("fas").addClass("far");
-      firebase.database().ref('locations/' + location.id).update({
-        isFavourite:false
-      });
+      $(id).removeClass("glyphicon-star").addClass("glyphicon-star-empty");
     }
 
-	}; //end of toggleFavourite
-
+    console.log(location.isFavourite)
+	};
 
   // Add a new marker to the map
   self.addMarker = function(data, event) {
+
     var toAdd = self.newMarker().replace(' ', '+');
+    console.log(toAdd);
     searchPlaces(toAdd);
+
   }
 
   function searchPlaces(query) {
@@ -230,9 +199,7 @@ var viewModel = function(map){
             var placeId = place.place_id,
                 index = -1,
                 testArray = self.locationsArray();
-                console.log(placeId);
               for(var i = 0, len = testArray.length; i < len; i++) {
-                console.log(testArray[i].id);
                   if (testArray[i].id === placeId) {
                       index = i;
                       break;
@@ -257,7 +224,6 @@ var viewModel = function(map){
     }
   }
 
-
   function updateLocationsArray(place, marker, index){
 
 
@@ -268,25 +234,18 @@ var viewModel = function(map){
           place.geometry.location.lng(),
           marker,
       );
-
-      writeLocationData(place.place_id,
-                          place.name,
-                          place.geometry.location.lat(),
-                          place.geometry.location.lng());
-
       marker.addListener('click', function() {
         populateInfoWindow(newLocation);
       });
 
       getFlickrPhotos(newLocation)
-      console.log(newLocation)
+
       self.locationsArray().push(newLocation);
       self.query(' ')
       self.query('')
       self.newMarker('')
 
   }
-
   // When a new location is added this creates a new pin
   function createMarker(pin){
     //var latlng = new google.maps.LatLng(pin.lat,pin.lng);
@@ -370,7 +329,7 @@ var viewModel = function(map){
                       +  '<div class="carousel-inner">';
 
         innerHTML += '<div class="carousel-item active">'
-                      + pin.flickrPhotos[0].htmlImageString
+                      +pin.flickrPhotos[0].htmlImageString
                       + '<div class="carousel-caption d-none d-md-block">'
                       +   pin.flickrPhotos[0].imgLink
                       + '</div>'
