@@ -15,6 +15,17 @@ function initMap() {
   ko.applyBindings(new viewModel(map));
 };   //end of initMap
 
+var locationsArray = [
+  ['ChIJHc6A2namIIYRaibte9NvWoU', 'The National WWII Museum', 29.942656, -90.070389],
+  ['ChIJQ0s1xLyoIIYRMLQP0iQsf2s', 'Old New Orleans Rum Distillery', 29.986506, -90.059135],
+  ['ChIJaS5FoBGmIIYRj77fFz8J_94', 'Jackson Square', 29.957444, -90.062935],
+  ['ChIJjXYFWwumIIYR6OUFIQPlkzw', 'French Quarter', 29.958443, -90.064411],
+  ['ChIJNwyZ61yvIIYR4YZghqiDU60', 'New Orleans Museum of Art', 29.986480, -90.093439],
+  ['ChIJ5fSNHgmmIIYRS1n2gaa7fGU', 'St Louis Cemetary', 29.960843, -90.075407],
+  ['ChIJoc0hTBCmIIYRz--TsYDlBno', 'Historic Voodoo Museum', 29.959904, -90.063851],
+  ['ChIJw6x_5RCmIIYRa5ffymRQaoQ', 'French Quarter Phantoms', 29.960693, -90.067975],
+  ['ChIJv33qrxCmIIYRfLKnlwPcNMw', 'Lalaurie Mansion', 29.961859, -90.061141]
+];
 //Constructor Class for locations
 var Location = function (id, title, lat, lng, marker){
   this.id = id;

@@ -15,6 +15,7 @@ function initMap() {
   ko.applyBindings(new viewModel(map));
 };   //end of initMap
 
+
 //Constructor Class for locations
 var Location = function (id, title, lat, lng, marker){
   this.id = id;
@@ -26,6 +27,7 @@ var Location = function (id, title, lat, lng, marker){
   this.flickrPhotos = [];
 }; //end of Location constructor
 
+
 // Initialize Firebase
 var config = {
   apiKey: "AIzaSyC_aKs-5e3hXL1jupJpfjFocogAMsXI0mI",
@@ -35,9 +37,12 @@ var config = {
   storageBucket: "",
   messagingSenderId: "1082791730015"
 };
+
 firebase.initializeApp(config);
 var database = firebase.database();
 
+
+// Write data to Firebase database
 function writeLocationData(id, title, lat, lng, marker) {
   firebase.database().ref('locations/' + id).set({
     id : id,
@@ -61,6 +66,7 @@ var viewModel = function(map){
   self.newMarker = ko.observable('');
   self.locationsArray = ko.observable([]);
 
+  // Initial read from firebase database
   firebase.database().ref('/locations/').once('value').then(function(snapshot) {
     var hello = snapshot.val();
     for (var i in hello) {
@@ -88,7 +94,7 @@ var viewModel = function(map){
   infowindow = new google.maps.InfoWindow({
 			 content: '',
 			 maxWidth: '200'
-		 });
+	});
 
   /*
   *   This function creates a Knockout Computed function that that takes the
@@ -107,8 +113,6 @@ var viewModel = function(map){
           pin.marker.setVisible(false);
         }
       });
-
-
   }, this);
 
   //Create a new Marker from each element in the Locations Array, adding the
@@ -118,6 +122,7 @@ var viewModel = function(map){
 
       var latlng = new google.maps.LatLng(pin.lat,pin.lng);
       var icon = pin.isFavourite == true ? favouriteIcon : defaultIcon;
+
       pin.marker = new google.maps.Marker({
         position: latlng,
         map: map,
@@ -125,14 +130,11 @@ var viewModel = function(map){
         icon: icon,
         title : pin.title,
       });
-      getFlickrPhotos(pin)
-      pin.marker.setMap(map);
 
+      getFlickrPhotos(pin);
 
       pin.marker.addListener('click', function() {
-        console.log(pin)
         populateInfoWindow(pin);
-
       });
 
       // Two event listeners - one for mouseover, one for mouseout,
@@ -140,6 +142,7 @@ var viewModel = function(map){
       pin.marker.addListener('mouseover', function() {
         this.setIcon(highlightedIcon);
       });
+
       pin.marker.addListener('mouseout', function() {
         this.setIcon(defaultIcon);
       });
@@ -152,6 +155,7 @@ var viewModel = function(map){
 
   //  This function opens the Side Navigation Menu when the Burger is clicked
   self.openNav = function(data, event) {
+
       var target = document.getElementById('burger');
 
       if ($('.container').hasClass('change')){
@@ -177,9 +181,9 @@ var viewModel = function(map){
         return location.isFavourite == false ? "fa far fa-star" : "fa fas fa-star";
   };
 
+  //Toggles the favourite icon while also updating the firebase database
   self.toggleFavourite = function(location) {
 
-    console.log(location.isFavourite)
     if (location.isFavourite == false) {
       location.isFavourite = true;
       location.marker.setIcon(favouriteIcon);
@@ -198,7 +202,6 @@ var viewModel = function(map){
         isFavourite:false
       });
     }
-
 	}; //end of toggleFavourite
 
 
@@ -208,11 +211,10 @@ var viewModel = function(map){
     searchPlaces(toAdd);
   }
 
+  //Begin the search for a the location queried
   function searchPlaces(query) {
-    console.log("searchPointsOfInterest");
 
     var newQuery = query + "+new+orleans";
-
     var request = {
         query: newQuery,
     };
@@ -221,6 +223,7 @@ var viewModel = function(map){
     service.textSearch(request, placeSearchCallback);
   }
 
+  //Call to the Places API for all results from user query
   function placeSearchCallback(results, status) {
 
     if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -230,34 +233,27 @@ var viewModel = function(map){
             var placeId = place.place_id,
                 index = -1,
                 testArray = self.locationsArray();
-                console.log(placeId);
               for(var i = 0, len = testArray.length; i < len; i++) {
-                console.log(testArray[i].id);
                   if (testArray[i].id === placeId) {
                       index = i;
                       break;
                   }
               }
-            console.log(index);
             if (index === -1) {
               var marker = createMarker(place);
               updateLocationsArray(place, marker, index);
             } else {
-                alert("The point of interest you are searching is already on the list!");
+                alert("The location you are searching is already on the list!");
             }
-
         }
-
     } else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-        alert("We didn't find any matchs for your search!");
+        alert("We didn't find any matches for your search!");
     } else {
-
-        alert("Oppps! Something went wrong. You may try check your connection and reload the page to see if it works!");
-
+        alert("Whooops! Something went wrong. You may want to check your connection and reload the page to see if it works!");
     }
   }
 
-
+  //Updates the Firebase dataBase and locationsArray with new Location(s)
   function updateLocationsArray(place, marker, index){
 
 
@@ -298,8 +294,6 @@ var viewModel = function(map){
       icon: defaultIcon,
       title : pin.name
     });
-
-    pin.marker.setMap(map);
 
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
@@ -410,6 +404,8 @@ var viewModel = function(map){
     });
   }
 }
+
+// Creates an event handler for hitting Enter in query input
 ko.bindingHandlers.enterKey = {
   init: function (element, valueAccessor, allBindings, data, context) {
     var wrapper = function (data, event) {
