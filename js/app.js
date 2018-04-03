@@ -275,7 +275,7 @@ var viewModel = function(map){
       });
 
       getFlickrPhotos(newLocation)
-      console.log(newLocation)
+
       self.locationsArray().push(newLocation);
       self.query(' ')
       self.query('')
@@ -400,6 +400,9 @@ var viewModel = function(map){
           infowindow.marker = null;
 
         });
+      } else {
+        console.log(google.maps.places.PlacesServiceStatus);
+        alert("There was an error loading Places API Data\n" + google.maps.places.PlacesServiceStatus)
       }
     });
   }
@@ -416,3 +419,7 @@ ko.bindingHandlers.enterKey = {
     ko.applyBindingsToNode(element, { event: { keyup: wrapper } }, context);
   }
 };
+
+function mapLoadFail() {
+  alert('Google Maps failed to load. Please reload the page.');
+}
