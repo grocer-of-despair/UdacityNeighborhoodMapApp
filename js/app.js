@@ -164,8 +164,18 @@ var viewModel = function(map){
         document.getElementById("nav").style.marginLeft = "0";
       } else {
         target.classList.toggle("change");
-        document.getElementById("mySidenav").style.width = "30%";
-        document.getElementById("nav").style.marginLeft = "30%";
+        if (window.matchMedia('(max-width: 1000px)').matches) {
+          document.getElementById("mySidenav").style.width = "85%";
+          document.getElementById("nav").style.marginLeft = "90%";
+        } else if (window.matchMedia('(max-width: 700px)').matches) {
+          document.getElementById("mySidenav").style.width = "50%";
+          document.getElementById("nav").style.marginLeft = "90%";
+        } else {
+          document.getElementById("mySidenav").style.width = "40%";
+          document.getElementById("nav").style.marginLeft = "40%";
+        }
+
+
       }
   } //end of openNav
 
@@ -360,38 +370,41 @@ var viewModel = function(map){
               place.opening_hours.weekday_text[5] + '<br>' +
               place.opening_hours.weekday_text[6];
         }
-        innerHTML += '<br><br><strong>Flickr Feed</strong><div id="carouselExampleControls" class="carousel slide" data-ride="carousel">'
-                      +  '<div class="carousel-inner">';
+        if (pin.flickrPhotos.length > 0){
+          innerHTML += '<br><br><strong>Flickr Feed</strong><div id="carouselExampleControls" class="carousel slide" data-ride="carousel">'
+                        +  '<div class="carousel-inner">';
 
-        innerHTML += '<div class="carousel-item active">'
-                      + pin.flickrPhotos[0].htmlImageString
-                      + '<div class="carousel-caption d-none d-md-block">'
-                      +   pin.flickrPhotos[0].imgLink
-                      + '</div>'
-                    +'</div>'
-        for (var j = 1;j < pin.flickrPhotos.length; j++){
-          innerHTML += '<div class="carousel-item">'
-                        + pin.flickrPhotos[j].htmlImageString
+          innerHTML += '<div class="carousel-item active">'
+                        + pin.flickrPhotos[0].htmlImageString
                         + '<div class="carousel-caption d-none d-md-block">'
-                        +   pin.flickrPhotos[j].imgLink
+                        +   pin.flickrPhotos[0].imgLink
                         + '</div>'
                       +'</div>'
+          for (var j = 1;j < pin.flickrPhotos.length; j++){
+            innerHTML += '<div class="carousel-item">'
+                          + pin.flickrPhotos[j].htmlImageString
+                          + '<div class="carousel-caption d-none d-md-block">'
+                          +   pin.flickrPhotos[j].imgLink
+                          + '</div>'
+                        +'</div>'
+          }
+
+          innerHTML +=  '<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">'
+                        +    '<span class="carousel-control-prev-icon" aria-hidden="true"></span>'
+                        +    '<span class="sr-only">Previous</span></a>'
+                        +  '<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">'
+                        +    '<span class="carousel-control-next-icon" aria-hidden="true"></span>'
+                        +    '<span class="sr-only">Next</span>'
+                        +  '</a>'
+                        + '</div><br>'
+
+
+          innerHTML += '</div>';
         }
-
-        innerHTML +=  '<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">'
-                      +    '<span class="carousel-control-prev-icon" aria-hidden="true"></span>'
-                      +    '<span class="sr-only">Previous</span></a>'
-                      +  '<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">'
-                      +    '<span class="carousel-control-next-icon" aria-hidden="true"></span>'
-                      +    '<span class="sr-only">Next</span>'
-                      +  '</a>'
-                      + '</div><br>'
-
-
-        innerHTML += '</div>';
         infowindow.setContent(innerHTML);
         infowindow.open(map, pin.marker);
         infowindow.marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function(){ infowindow.marker.setAnimation(null); }, 2250);
         // Make sure the marker property is cleared if the infowindow is closed.
         infowindow.addListener('closeclick', function() {
           if (infowindow.marker){

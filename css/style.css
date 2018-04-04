@@ -41,7 +41,9 @@ h1 {
   transition: 0.5s;
  }
 
-#nav { transition:0.5s; }
+#nav {
+  transition: 0.5s;
+}
 
 hr {
   background: #D0D7D9;
@@ -123,7 +125,7 @@ hr {
   margin-top: 5px;
 }
 
- 
+
 .fas {
   color: gold;
 }
@@ -135,10 +137,20 @@ hr {
     padding: 20px;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
+/* On smaller screens, where height is less than 1000px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-width: 1000px) {
     .sidenav a {font-size: 18px;}
+}
+
+/* On smaller screens, where height is less than 750px, change the style of the h1 (smaller font size) */
+@media screen and (max-width: 750px) {
+    h1 { font-size: 18px; }
+    .sidenav a { font-size: 14px; }
+}
+
+/* On smaller screens, where height is less than 750px, change the style of the h1 (smaller font size) */
+@media screen and (max-width: 450px) {
+    h1 { font-size: 12px; }
 }
 
 /* Style for the Burger Menu, including animation */

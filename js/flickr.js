@@ -31,21 +31,23 @@ function getFlickrPhotos(pin){
           })
         }
   ).fail(function(jqXHR, textStatus, errorThrown) {
-    var msg = '';
+      var msg = '';
       if (jqXHR.status === 0) {
-          console.log('Not connect.\n Verify Network.');
+          msg = 'Not connect.\n Verify Network.';
       } else if (jqXHR.status == 404) {
-          console.log('Requested page not found. [404]');
+          msg = 'Requested page not found. [404]';
       } else if (jqXHR.status == 500) {
-          console.log('Internal Server Error [500].');
+          msg = 'Internal Server Error [500].';
       } else if (exception === 'parsererror') {
-          console.log('Requested JSON parse failed.');
+          msg = 'Requested JSON parse failed.';
       } else if (exception === 'timeout') {
-          console.log('Time out error.');
+          msg = 'Time out error.';
       } else if (exception === 'abort') {
-          console.log('Ajax request aborted.');
+          msg = 'Ajax request aborted.';
       } else {
-          console.log('Uncaught Error.\n' + jqXHR.responseText);
+          msg = 'Uncaught Error.\n' + jqXHR.responseText;
       }
+      console.log(msg);
+      alert(msg);
     });
 }
